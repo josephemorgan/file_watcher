@@ -60,6 +60,17 @@ async function saveRecord(record: Set<string>) {
 }
 
 async function handleFileAdd(filePath: string, record: Set<string>) {
+  const stat = await fs.stat(filePath);
+  logger.debug(`Detected new file: ${filePath}`);
+  if (stat.isDirectory()) {
+    logger.debug(`Directory added: ${filePath}, scanning contents...`);
+    const files = await fs.readdir(filePath);
+    for (const innerFile of files) {
+      const innerPath = path.join(filePath, innerFile);
+      await handleFileAdd(innerPath, record);
+    }
+    return;
+  }
   const fileName = path.basename(filePath);
   if (record.has(fileName)) return;
 
@@ -76,14 +87,7 @@ async function main() {
   // Scan SOURCE_DIR for existing files and copy missing ones
   const files = await fs.readdir(SOURCE_DIR);
   for (const fileName of files) {
-    if (!record.has(fileName)) {
-      const sourcePath = path.join(SOURCE_DIR, fileName);
-      const targetPath = path.join(TARGET_DIR, fileName);
-      await fs.copyFile(sourcePath, targetPath);
-      record.add(fileName);
-      await saveRecord(record);
-      logger.log(`Copied existing: ${fileName}`);
-    }
+    handleFileAdd(path.join(SOURCE_DIR, fileName), record);
   }
 
   const watcher = chokidar.watch(SOURCE_DIR, {
