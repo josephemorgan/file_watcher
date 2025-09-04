@@ -1,0 +1,23 @@
+{
+  "name": "book_watcher",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Watches for files to be added in one directory, and copies them to another directory when they are.",
+  "main": "dist/service.js",
+  "author": "Joseph Morgan",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chokidar": "^2.1.7",
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "dev": "SOURCE_DIR=./test_src/ TARGET_DIR=./test_target/ ts-node src/service.ts",
+    "build": "tsc",
+    "start": "node dist/service.js"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3"
+  }
+}
