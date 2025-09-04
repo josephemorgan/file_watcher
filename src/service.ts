@@ -12,6 +12,7 @@ const SOURCE_DIR = process.env.SOURCE_DIR!;
 const TARGET_DIR = process.env.TARGET_DIR!;
 const RECORD_FILE = process.env.RECORD_FILE || "transfers.json";
 const LOG_FILE = process.env.LOG_FILE;
+const IGNORE_PATTERN = process.env.IGNORE_PATTERN;
 
 interface Logger {
   log: typeof console.log;
@@ -65,7 +66,7 @@ async function saveRecord(record: Set<string>) {
 
 async function handleFileAdd(filePath: string, record: Set<string>) {
   const stat = await fs.stat(filePath);
-  logger.debug(`Detected new file: ${filePath}`);
+  logger.debug(`Detected file: ${filePath}`);
   if (stat.isDirectory()) {
     logger.debug(`Directory added: ${filePath}, scanning contents...`);
     const files = await fs.readdir(filePath);
@@ -76,6 +77,10 @@ async function handleFileAdd(filePath: string, record: Set<string>) {
     return;
   }
   const fileName = path.basename(filePath);
+  if (IGNORE_PATTERN && new RegExp(IGNORE_PATTERN).test(fileName)) {
+    logger.info(`Ignoring file due to pattern: ${fileName}`);
+    return;
+  }
   if (record.has(fileName)) return;
 
   const targetPath = path.join(TARGET_DIR, fileName);
