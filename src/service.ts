@@ -56,7 +56,11 @@ async function loadRecord(): Promise<Set<string>> {
 }
 
 async function saveRecord(record: Set<string>) {
-  await fs.writeFile(RECORD_FILE, JSON.stringify(Array.from(record)), "utf-8");
+  await fs.writeFile(
+    RECORD_FILE,
+    JSON.stringify(Array.from(record), null, 2),
+    "utf-8",
+  );
 }
 
 async function handleFileAdd(filePath: string, record: Set<string>) {
