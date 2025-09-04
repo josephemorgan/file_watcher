@@ -16,7 +16,7 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "dev": "SOURCE_DIR=./test_src/ TARGET_DIR=./test_target/ ts-node src/service.ts",
+    "dev": "SOURCE_DIR=./test_src/ TARGET_DIR=./test_target/ IGNORE_PATTERN=.part ts-node src/service.ts",
     "build": "tsc",
     "start": "node dist/service.js"
   }
