@@ -26,22 +26,28 @@ interface Logger {
 const logger: Logger = LOG_FILE
   ? {
       log: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
       error: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
       warn: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
       info: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
       debug: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
       trace: (...args) => {
-        fs.appendFile(LOG_FILE, args.join(" ") + "\n").catch(console.error);
+        const time = new Date().toISOString();
+        fs.appendFile(LOG_FILE, `[${time}] ` + args.join(" ") + "\n").catch(console.error);
       },
     }
   : console;
